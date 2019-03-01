@@ -1,29 +1,25 @@
-import * as React from 'react';
 import assert from 'assert';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { test } from 'sarg';
 import { Router } from 'halter';
+import { createMemoryHistory, History } from 'history';
+import * as React from 'react';
+import { test } from 'sarg';
+import { RouterContext } from '../src';
+import Link from '../src/Link';
 import RouterView from '../src/RouterView';
 import {
     Admin,
     AppWrapper,
     Book,
     Home,
-    SpecialWrapper,
-    Login
+    Login,
+    SpecialWrapper
 } from './react-components';
-import { createMemoryHistory, History } from 'history';
 
 Enzyme.configure({
     adapter: new Adapter()
 });
-
-// const books = {
-//     1: {
-//         title: 'Book 1'
-//     }
-// };
 
 async function wait(history: History, cb: () => Promise<void>) {
     const waitNextChange = new Promise((resolve) => {
@@ -42,19 +38,19 @@ test('it should render index when /', async () => {
     const wrapper = shallow<RouterView>(<RouterView
         router={router}
         routes={[{
-            path: '/',
+            component: Home,
             name: 'home',
-            component: Home
+            path: '/'
         }]}
     />);
 
-    await wrapper.instance()._initPromise;
+    await wrapper.instance().initPromise;
 
     assert(wrapper.update().first().equals(
         <Home location={{
             name: 'home',
-            params: {},
-            query: {}
+            params: new Map(),
+            query: new Map()
         }}/>
     ));
 });
@@ -66,24 +62,22 @@ test('it should render /books/100', async () => {
     const wrapper = shallow<RouterView>(<RouterView
         router={router}
         routes={[{
+            component: Book,
             name: 'books',
             path: '/books/{id:[0-9]+}',
-            component: Book
         }]}
     />);
 
-    await wrapper.instance()._initPromise;
-    await wait(history, () => router.pushState('books', {id: '100'}));
+    await wrapper.instance().initPromise;
+    await wait(history, () => router.pushState('books', new Map().set('id', '100')));
     await router.pending;
 
     assert(wrapper.update().first().equals(
         <Book
             location={{
                 name: 'books',
-                params: {
-                    id: '100'
-                },
-                query: {}
+                params: new Map().set('id', '100'),
+                query: new Map()
             }}
         />
     ));
@@ -96,37 +90,68 @@ test('it should redirect using onBefore() and replace state option', async () =>
     const wrapper = shallow<RouterView>(<RouterView
         router={router}
         routes={[{
-            path: '/books/{id:[0-9]+}',
-            name: 'books',
             component: Book,
+            name: 'books',
             onBefore: (match, replaceState) => {
-                replaceState('newBooks', {
-                    id: match.params.id
-                });
-            }
+                replaceState('newBooks', match.params);
+            },
+            path: '/books/{id:[0-9]+}'
         }, {
+            component: Book,
             name: 'newBooks',
             path: '/b/{id:[0-9]+}',
-            component: Book
         }]}
     />);
 
-    await wrapper.instance()._initPromise;
-    await wait(history, () => router.pushState('books', {
-        id: '100'
-    }));
+    await wrapper.instance().initPromise;
+    await wait(history, () => router.pushState('books', new Map().set('id', '100')));
     await router.pending;
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     assert(wrapper.update().first().equals(
         <Book
             location={{
                 name: 'newBooks',
-                query: {},
-                params: {
-                    id: '100'
-                }
+                params: new Map().set('id', '100'),
+                query: new Map()
             }}
         />
+    ));
+});
+
+test('it should work with default-exported react component modules', async () => {
+    const history = createMemoryHistory();
+    const router = new Router(history);
+
+    const routes = [{
+        childRoutes: [{
+            getComponent: () => import('./Book.test'),
+            name: 'books',
+            path: 'books/{id:[0-9]+}'
+        }],
+        component: AppWrapper,
+        name: 'admin',
+        path: '/admin',
+    }];
+    const wrapper = shallow<RouterView>(<RouterView
+        router={router}
+        routes={routes}
+    />);
+
+    await wrapper.instance().initPromise;
+    await wait(history, () => router.pushState('admin.books', new Map().set('id', '100')));
+    await router.pending;
+
+    const location = {
+        name: 'admin.books',
+        params: new Map().set('id', '100'),
+        query: new Map()
+    };
+
+    assert(wrapper.update().first().equals(
+        <AppWrapper location={location}>
+            <Book location={location}/>
+        </AppWrapper>
     ));
 });
 
@@ -135,32 +160,28 @@ test('it should support nested routes /admin/books/100', async () => {
     const router = new Router(history);
 
     const routes = [{
-        path: '/admin',
-        name: 'admin',
-        component: AppWrapper,
         childRoutes: [{
+            component: Book,
             name: 'books',
-            path: 'books/{id:[0-9]+}',
-            component: Book
-        }]
+            path: 'books/{id:[0-9]+}'
+        }],
+        component: AppWrapper,
+        name: 'admin',
+        path: '/admin',
     }];
     const wrapper = shallow<RouterView>(<RouterView
         router={router}
         routes={routes}
     />);
 
-    await wrapper.instance()._initPromise;
-    await wait(history, () => router.pushState('admin.books', {
-        id: '100'
-    }));
+    await wrapper.instance().initPromise;
+    await wait(history, () => router.pushState('admin.books', new Map().set('id', '100')));
     await router.pending;
 
     const location = {
         name: 'admin.books',
-        params: {
-            id: '100'
-        },
-        query: {}
+        params: new Map().set('id', '100'),
+        query: new Map()
     };
 
     assert(wrapper.update().first().equals(
@@ -176,32 +197,32 @@ test('it should support labeled routes approach', async () => {
     const wrapper = shallow<RouterView>(<RouterView
         router={router}
         routes={[{
-            path: '/',
-            name: 'app',
-            component: AppWrapper,
             childRoutes: [{
-                name: 'index',
-                component: Home
+                component: Home,
+                name: 'index'
             }, {
+                component: Admin,
                 name: 'admin',
-                path: 'admin',
-                component: Admin
-            }]
+                path: 'admin'
+            }],
+            component: AppWrapper,
+            name: 'app',
+            path: '/'
         }]}
     />);
 
-    await wrapper.instance()._initPromise;
+    await wrapper.instance().initPromise;
 
     const paths = {
-        index: {
-            name: 'app.index',
-            params: {},
-            query: {}
-        },
         admin: {
             name: 'app.admin',
-            params: {},
-            query: {}
+            params: new Map(),
+            query: new Map()
+        },
+        index: {
+            name: 'app.index',
+            params: new Map(),
+            query: new Map()
         }
     };
 
@@ -230,26 +251,26 @@ test('it should render special parent for particular sets of routes', async () =
     const wrapper = shallow<RouterView>(<RouterView
         router={router}
         routes={[{
-            path: '/',
-            name: 'app',
             childRoutes: [{
-                name: 'index',
-                component: AppWrapper,
                 childRoutes: [{
                     component: Home
-                }]
+                }],
+                component: AppWrapper,
+                name: 'index',
             }, {
-                component: SpecialWrapper,
                 childRoutes: [{
+                    component: Login,
                     name: 'login',
                     path: 'login',
-                    component: Login
-                }]
-            }]
+                }],
+                component: SpecialWrapper
+            }],
+            name: 'app',
+            path: '/'
         }]}
     />);
 
-    await wrapper.instance()._initPromise;
+    await wrapper.instance().initPromise;
     await router.pending;
 
     await wait(history, () => router.pushState('app.index'));
@@ -257,8 +278,8 @@ test('it should render special parent for particular sets of routes', async () =
 
     const location1 = {
         name: 'app.index',
-        query: {},
-        params: {}
+        params: new Map(),
+        query: new Map()
     };
 
     assert(wrapper.update().first().equals(<AppWrapper location={location1}>
@@ -270,13 +291,48 @@ test('it should render special parent for particular sets of routes', async () =
 
     const location2 = {
         name: 'app.login',
-        query: {},
-        params: {}
+        params: new Map(),
+        query: new Map()
     };
 
     assert(wrapper.update().first().equals(<SpecialWrapper location={location2}>
         <Login location={location2} />
     </SpecialWrapper>));
+});
+
+test('Link: it should render link component according to parameters', async () => {
+    const history = createMemoryHistory();
+    const router = new Router(history);
+
+    const noop = () => undefined;
+
+    router.on({
+        callback: noop,
+        path: '/',
+    })
+    .on({
+        callback: noop,
+        name: 'login',
+        path: '/login'
+    })
+    .on({
+        callback: noop,
+        name: 'user.detail',
+        path: '/users/{id:[0-9]+}'
+    });
+    await router.init();
+
+    const wrapper = shallow(
+        <RouterContext.Provider value={router}>
+            <Link to="login">Go to login page</Link>
+            <Link to="user.detail" params={new Map().set('id', '100')}>User 1 detail</Link>
+        </RouterContext.Provider>
+    );
+
+    assert.equal(wrapper.html(), (
+        '<a href="/login">Go to login page</a>' +
+        '<a href="/users/100">User 1 detail</a>'
+    ));
 });
 
 // test('it should execute all nested routes `onBefore` functions in the right order', async () => {
