@@ -1144,10 +1144,10 @@ graceful-fs@^4.1.15, graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
   integrity sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
 
-halter@^2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/halter/-/halter-2.0.8.tgz#afc53c68b10025522360f0fcf58e3ab433d94ec6"
-  integrity sha512-EsTwbViguXwZ3CCjkeiQOsom2NZRIzCc0/Hl0kh/Ftwfs5WzwzoHP7h1zLOGE7JzyyglauOrfMWJLfpOVrcCKA==
+halter@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/halter/-/halter-2.1.1.tgz#ae37f5527f0f9d967dbb3eb4a302fc9775db404b"
+  integrity sha512-lfJtM4fBfp+OehiEuBHYglqqJilO7gggEUPBJfxKKLO4hPfJVdlyx1QeFa6Zljm5clhktvJrBAMmklPlZm62Fg==
 
 handlebars@^4.1.0:
   version "4.1.0"

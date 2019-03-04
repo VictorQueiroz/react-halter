@@ -306,16 +306,16 @@ test('Link: it should render link component according to parameters', async () =
 
     const noop = () => undefined;
 
-    router.on({
+    router.addRoute({
         callback: noop,
         path: '/',
     })
-    .on({
+    .addRoute({
         callback: noop,
         name: 'login',
         path: '/login'
     })
-    .on({
+    .addRoute({
         callback: noop,
         name: 'user.detail',
         path: '/users/{id:[0-9]+}'

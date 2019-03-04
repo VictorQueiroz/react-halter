@@ -64,7 +64,7 @@ export default class RoutesTree extends EventEmitter {
             const data = this.getRouteData(route, parent);
             const childrenKey = data.name.join('/');
 
-            this.router.on({
+            this.router.addRoute({
                 callback: async (name, params, query) => {
                     const props = {
                         location: {
