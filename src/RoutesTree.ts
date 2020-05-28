@@ -3,9 +3,7 @@ import Router, { IRoute } from "halter/lib/router";
 import {
     cloneElement,
     createElement,
-    ReactElement,
-    ComponentType,
-    PropsWithChildren
+    ReactElement
 } from "react";
 
 export interface IRouteLocation {
@@ -18,22 +16,17 @@ export interface IRouteComponentBaseProps {
     location: IRouteLocation;
 }
 
-export type RouteAcceptedComponents = ComponentType<PropsWithChildren<{}>> | null;
-
-/**
- * React component types that are accepted by IRouteDefinition
- */
-export type RouteComponentClass = RouteAcceptedComponents | {
-    default: RouteAcceptedComponents;
-};
+export type ComponentType = React.ComponentType<{}>;
 
 export type ReplaceStateFunction = (name: string, params?: Map<string, string>, query?: Map<string, string>) => void;
-export type GetComponentFunction = () => RouteComponentClass | Promise<RouteComponentClass>;
+export type GetComponentFunction = () => (ComponentType | Promise<ComponentType> | Promise<{
+    default: ComponentType;
+}>);
 
 export interface IRouteDefinition {
     name?: string;
     path?: string;
-    component?: RouteComponentClass;
+    component?: ComponentType;
     onBefore?: IRoute["onBefore"];
     getComponent?: GetComponentFunction;
     childRoutes?: IRouteDefinition[];

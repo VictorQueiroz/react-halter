@@ -222,6 +222,35 @@ test('it should not accept components that expect properties', () => {
 
 });
 
+test('it should accept components with children property', () => {
+    function Test1({children}: {
+        children?: React.ReactNode;
+    }) {
+        return <React.Fragment>
+            {children}
+        </React.Fragment>;
+    }
+    function Test2({children}: {
+        children?: React.ReactNode;
+    }) {
+        return <React.Fragment>
+            {children}
+        </React.Fragment>;
+    }
+    <RouterView
+        router={new Router(createMemoryHistory())}
+        routes={[
+            {
+                name: 'route1',
+                component: Test1
+            },
+            {
+                name: 'route2',
+                component: Test2
+            }
+        ]}/>
+});
+
 test('it should render special parent for particular sets of routes', async () => {
     const history = createMemoryHistory();
     const router = new Router(history);
