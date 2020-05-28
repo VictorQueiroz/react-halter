@@ -16,7 +16,7 @@ export interface IRouteComponentBaseProps {
     location: IRouteLocation;
 }
 
-export type ComponentType = React.ComponentType<{}>;
+export type ComponentType = React.ComponentType<{}> | React.ExoticComponent<{}>;
 
 export type ReplaceStateFunction = (name: string, params?: Map<string, string>, query?: Map<string, string>) => void;
 export type GetComponentFunction = () => (ComponentType | Promise<ComponentType> | Promise<{
