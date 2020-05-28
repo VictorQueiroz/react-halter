@@ -204,6 +204,24 @@ test('it should support labeled routes approach', async () => {
     </AppWrapper>));
 });
 
+test('it should not accept components that expect properties', () => {
+    function Test({title}: {
+        title: string;
+    }) {
+        return <React.Fragment>{title}</React.Fragment>;
+    }
+    <RouterView
+        router={new Router(createMemoryHistory())}
+        routes={[
+            {
+                // @ts-expect-error
+                component: Test
+            }
+        ]}
+    />;
+
+});
+
 test('it should render special parent for particular sets of routes', async () => {
     const history = createMemoryHistory();
     const router = new Router(history);
