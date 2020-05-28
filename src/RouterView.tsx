@@ -1,8 +1,8 @@
-import autobind from 'autobind-decorator';
+import { boundMethod } from 'autobind-decorator';
 import { Router } from 'halter';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import RoutesTree, { IRouteDefinition } from './RoutesTree';
+import RoutesTree, { IRouteDefinition, IReactHalterLocation } from './RoutesTree';
 
 export interface IRouterViewProps {
     router: Router;
@@ -10,57 +10,73 @@ export interface IRouterViewProps {
 }
 
 class RouterView<T extends object = {}> extends PureComponent<T & IRouterViewProps, {
-    children?: React.ReactNode;
+    current?: {
+        children: React.ReactNode;
+        location: IReactHalterLocation;
+    };
 }> {
     public initPromise?: Promise<Router>;
     private tree = new RoutesTree(this.props.router, this.onReceiveChildren);
     constructor(props: T & IRouterViewProps) {
         super(props);
         this.state = {};
+        this.tree.createRoutes(this.props.routes);
     }
 
-    @autobind
-    public onReceiveChildren(children: React.ReactNode) {
-        this.setState({
-            children
-        });
+    public componentDidMount() {
+        this.initPromise = this.initializeRouter();
     }
 
     public componentWillUnmount() {
         this.props.router.destroy();
     }
 
-    public UNSAFE_componentWillReceiveProps(nextProps: RouterView["props"]) {
-        let router: Router = this.props.router;
-        if(nextProps.router !== router) {
-            router.destroy();
-            router = nextProps.router;
+    public componentDidUpdate({ routes: previousRoutes, router: previousRouter }: RouterView["props"]) {
+        const {router, routes} = this.props;
+        if(previousRouter !== router) {
+            previousRouter.destroy();
             this.tree = new RoutesTree(router, this.onReceiveChildren);
         }
-        if(nextProps.routes !== this.props.routes) {
+        if(previousRoutes !== routes) {
             router.destroy();
-            this.tree.createRoutes(nextProps.routes);
-            router.init();
+            this.tree.createRoutes(routes);
+            this.initPromise = this.initializeRouter();
         }
-    }
-
-    public componentDidMount() {
-        this.initPromise = new Promise((resolve) => {
-            this.tree.createRoutes(this.props.routes);
-            resolve(this.props.router.init());
-        });
     }
 
     public render() {
         const {
-            children
+            current
         } = this.state;
 
-        if(children) {
-            return children;
+        if(current) {
+            return current.children;
         }
 
-        return <span className="router-not-ready"/>;
+        return null;
+    }
+
+    @boundMethod
+    public onReceiveChildren(children: React.ReactNode, location: IReactHalterLocation) {
+        this.setState({
+            current: {
+                children,
+                location
+            }
+        });
+    }
+
+    private initializeRouter(): Promise<Router> {
+        return new Promise<Router>((resolve) => {
+            resolve(this.props.router.init());
+        }).catch(this.onInitFail);
+    }
+
+    @boundMethod
+    private onInitFail(reason: any) {
+        console.error('Failed to initialize router. See reason below:');
+        console.error(reason);
+        return this.props.router;
     }
 }
 

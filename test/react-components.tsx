@@ -2,11 +2,7 @@
 
 import * as React from 'react';
 
-export interface IComponentProps {
-    location: {
-        params: Map<string, string>;
-    };
-}
+export interface IComponentProps {}
 
 export class Home extends React.PureComponent<IComponentProps> {
     public render() {
@@ -18,18 +14,17 @@ export class Home extends React.PureComponent<IComponentProps> {
 
 export class Book extends React.PureComponent<IComponentProps> {
     public render() {
-        const {location: {params}} = this.props;
         return <div>
-            Book id is "{params.get('id')}"
+            Books page
         </div>;
     }
 }
 
+
 export class Post extends React.PureComponent<IComponentProps> {
     public render() {
-        const {location: {params}} = this.props;
         return <div>
-            {`Post id is "${params.get('id')}"`}
+            Posts page
         </div>;
     }
 }

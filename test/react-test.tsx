@@ -47,11 +47,7 @@ test('it should render index when /', async () => {
     await wrapper.instance().initPromise;
 
     assert(wrapper.update().first().equals(
-        <Home location={{
-            name: 'home',
-            params: new Map(),
-            query: new Map()
-        }}/>
+        <Home/>
     ));
 });
 
@@ -73,13 +69,7 @@ test('it should render /books/100', async () => {
     await router.pending;
 
     assert(wrapper.update().first().equals(
-        <Book
-            location={{
-                name: 'books',
-                params: new Map().set('id', '100'),
-                query: new Map()
-            }}
-        />
+        <Book/>
     ));
 });
 
@@ -109,13 +99,7 @@ test('it should redirect using onBefore() and replace state option', async () =>
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     assert(wrapper.update().first().equals(
-        <Book
-            location={{
-                name: 'newBooks',
-                params: new Map().set('id', '100'),
-                query: new Map()
-            }}
-        />
+        <Book/>
     ));
 });
 
@@ -142,15 +126,9 @@ test('it should work with default-exported react component modules', async () =>
     await wait(history, () => router.pushState('admin.books', new Map().set('id', '100')));
     await router.pending;
 
-    const location = {
-        name: 'admin.books',
-        params: new Map().set('id', '100'),
-        query: new Map()
-    };
-
     assert(wrapper.update().first().equals(
-        <AppWrapper location={location}>
-            <Book location={location}/>
+        <AppWrapper >
+            <Book />
         </AppWrapper>
     ));
 });
@@ -178,15 +156,9 @@ test('it should support nested routes /admin/books/100', async () => {
     await wait(history, () => router.pushState('admin.books', new Map().set('id', '100')));
     await router.pending;
 
-    const location = {
-        name: 'admin.books',
-        params: new Map().set('id', '100'),
-        query: new Map()
-    };
-
     assert(wrapper.update().first().equals(
-        <AppWrapper location={location}>
-            <Book location={location}/>
+        <AppWrapper >
+            <Book />
         </AppWrapper>
     ));
 });
@@ -213,35 +185,22 @@ test('it should support labeled routes approach', async () => {
 
     await wrapper.instance().initPromise;
 
-    const paths = {
-        admin: {
-            name: 'app.admin',
-            params: new Map(),
-            query: new Map()
-        },
-        index: {
-            name: 'app.index',
-            params: new Map(),
-            query: new Map()
-        }
-    };
-
-    assert(wrapper.update().equals(<AppWrapper location={paths.index}>
-        <Home location={paths.index}/>
+    assert(wrapper.update().equals(<AppWrapper >
+        <Home />
     </AppWrapper>));
 
     await wait(history, () => router.pushState('app.admin'));
     await router.pending;
 
-    assert(wrapper.update().equals(<AppWrapper location={paths.admin}>
-        <Admin location={paths.admin} />
+    assert(wrapper.update().equals(<AppWrapper>
+        <Admin  />
     </AppWrapper>));
 
     await wait(history, () => router.pushState('app.index'));
     await router.pending;
 
-    assert(wrapper.update().equals(<AppWrapper location={paths.index}>
-        <Home location={paths.index}/>
+    assert(wrapper.update().equals(<AppWrapper >
+        <Home />
     </AppWrapper>));
 });
 
@@ -276,27 +235,15 @@ test('it should render special parent for particular sets of routes', async () =
     await wait(history, () => router.pushState('app.index'));
     await router.pending;
 
-    const location1 = {
-        name: 'app.index',
-        params: new Map(),
-        query: new Map()
-    };
-
-    assert(wrapper.update().first().equals(<AppWrapper location={location1}>
-        <Home location={location1}/>
+    assert(wrapper.update().first().equals(<AppWrapper>
+        <Home/>
     </AppWrapper>));
 
     await wait(history, () => router.pushState('app.login'));
     await router.pending;
 
-    const location2 = {
-        name: 'app.login',
-        params: new Map(),
-        query: new Map()
-    };
-
-    assert(wrapper.update().first().equals(<SpecialWrapper location={location2}>
-        <Login location={location2} />
+    assert(wrapper.update().first().equals(<SpecialWrapper>
+        <Login />
     </SpecialWrapper>));
 });
 
@@ -405,9 +352,9 @@ test('Link: it should render link component according to parameters', async () =
 //     };
 
 //     assert(wrapper.update().first().equals(
-//         <AppWrapper location={location}>
-//             <HomeWrapper location={location}>
-//                 <Home location={location} />
+//         <AppWrapper >
+//             <HomeWrapper >
+//                 <Home  />
 //             </HomeWrapper>
 //         </AppWrapper>
 //     ));

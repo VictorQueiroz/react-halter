@@ -2,10 +2,10 @@ import { EventEmitter } from "events";
 import Router, { IRoute } from "halter/lib/router";
 import {
     cloneElement,
-    ComponentClass,
     createElement,
-    FunctionComponent,
-    ReactElement
+    ReactElement,
+    ComponentType,
+    PropsWithChildren
 } from "react";
 
 export interface IRouteLocation {
@@ -18,13 +18,13 @@ export interface IRouteComponentBaseProps {
     location: IRouteLocation;
 }
 
-export type RouteAcceptedComponents<T> = ComponentClass<T> | FunctionComponent<T> | null;
+export type RouteAcceptedComponents = ComponentType<PropsWithChildren<{}>> | null;
 
 /**
  * React component types that are accepted by IRouteDefinition
  */
-export type RouteComponentClass = RouteAcceptedComponents<any> | {
-    default: RouteAcceptedComponents<any>;
+export type RouteComponentClass = RouteAcceptedComponents | {
+    default: RouteAcceptedComponents;
 };
 
 export type ReplaceStateFunction = (name: string, params?: Map<string, string>, query?: Map<string, string>) => void;
@@ -46,9 +46,18 @@ export interface IRouteRenderInformation {
     component: GetComponentFunction[];
 }
 
+export interface IReactHalterLocation {
+    name: string;
+    params: Map<string, string>;
+    query: Map<string, string>;
+}
+
 export default class RoutesTree extends EventEmitter {
     private cachedChildrens = new Map<string, ReactElement | null>();
-    constructor(private router: Router, private callback: (node: ReactElement | null) => void) {
+    constructor(
+        private readonly router: Router,
+        private readonly callback: (node: ReactElement | null, location: IReactHalterLocation) => void
+    ) {
         super();
     }
 
@@ -66,16 +75,15 @@ export default class RoutesTree extends EventEmitter {
 
             this.router.addRoute({
                 callback: async (name, params, query) => {
-                    const props = {
-                        location: {
-                            name,
-                            params,
-                            query
-                        }
+                    const props = {};
+                    const location = {
+                        name,
+                        params,
+                        query
                     };
                     const children = await new Promise<ReactElement | null>(async (resolve) => {
                         const cachedChildren = this.cachedChildrens.get(childrenKey);
-                        if(cachedChildren) {
+                        if(cachedChildren && process.env.NODE_ENV !== 'development') {
                             resolve(cachedChildren);
                             return;
                         }
@@ -84,10 +92,12 @@ export default class RoutesTree extends EventEmitter {
                         resolve(component);
                     });
                     if(children === null) {
-                        this.callback(null);
+                        this.callback(null, location);
                         return;
                     }
-                    this.callback(cloneElement(children, props));
+                    const newElement = cloneElement(children, props);
+                    // console.log('new route element is', newElement);
+                    this.callback(newElement, location);
                 },
                 name: data.name.join("."),
                 path: data.path.join("/").replace(/\/{1,}/g, "/"),
@@ -121,8 +131,8 @@ export default class RoutesTree extends EventEmitter {
             component.push(() => c);
         } else if(route.getComponent) {
             component.push(route.getComponent);
-        } else if(!route.childRoutes) {
-            throw new Error("You should either define `getComponent` or `component` property of route");
+        } else if(!route.childRoutes && !route.onBefore) {
+            throw new Error("You should either define `getComponent`, `onBefore` or `component` property of route");
         }
     }
 
