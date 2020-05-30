@@ -18,9 +18,9 @@
     "enzyme-adapter-react-16": "^1.9.1",
     "history": "^4.7.2",
     "nyc": "^13.3.0",
-    "react": "^16.6.0",
+    "react": "^16.13.1",
     "react-dom": "^16.6.1",
-    "sarg": "^3.0.1",
+    "sarg": "^4.0.6",
     "sinon": "^7.2.5",
     "sinon-chai": "^3.3.0",
     "ts-node": "^8.9.1",
@@ -48,8 +48,7 @@
   "description": "ReactJS integration with Halter router",
   "dependencies": {
     "autobind-decorator": "^2.4.0",
-    "halter": "^2.1.1",
-    "react-context-utilities": "^1.0.5"
+    "halter": "^2.1.1"
   },
   "keywords": [
     "react",
@@ -57,5 +56,8 @@
     "integration",
     "router",
     "lightweight"
-  ]
+  ],
+  "peerDependencies": {
+    "react-context-utilities": "^1.0.8"
+  }
 }
