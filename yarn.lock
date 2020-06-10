@@ -150,10 +150,18 @@
   dependencies:
     "@types/enzyme" "*"
 
-"@types/enzyme@*", "@types/enzyme@^3.9.0":
+"@types/enzyme@*":
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-3.9.0.tgz#a81c91e2dfd2d70e67f013f2c0e5efed6df05489"
   integrity sha512-o0C7ooyBtj9NKyMzn2BWN53W4J21KPhO+/v+qqQX28Pcz0Z1B3DjL9bq2ZR4TN70PVw8O7gkhuFtC7VN3tausg==
+  dependencies:
+    "@types/cheerio" "*"
+    "@types/react" "*"
+
+"@types/enzyme@^3.10.5":
+  version "3.10.5"
+  resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-3.10.5.tgz#fe7eeba3550369eed20e7fb565bfb74eec44f1f0"
+  integrity sha512-R+phe509UuUYy9Tk0YlSbipRpfVtIzb/9BHn5pTEtjJTF5LXvUjrIQcZvNyANNEyFrd2YGs196PniNT1fgvOQA==
   dependencies:
     "@types/cheerio" "*"
     "@types/react" "*"
@@ -193,10 +201,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/react@^16.9.34":
-  version "16.9.34"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.34.tgz#f7d5e331c468f53affed17a8a4d488cd44ea9349"
-  integrity sha512-8AJlYMOfPe1KGLKyHpflCg5z46n0b5DbRfqDksxBLBTUpB75ypDBAO9eCUcjNwE6LCUslwTz00yyG/X9gaVtow==
+"@types/react@^16.9.35":
+  version "16.9.35"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.35.tgz#a0830d172e8aadd9bd41709ba2281a3124bbd368"
+  integrity sha512-q0n0SsWcGc8nDqH2GJfWQWUOmZSJhXV64CjVN5SvcNti3TdEaA3AH0D8DwNmMdzjMAC/78tB8nAZIlV8yTz+zQ==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -929,10 +937,10 @@ graceful-fs@^4.1.15, graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
   integrity sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
 
-halter@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/halter/-/halter-2.1.1.tgz#ae37f5527f0f9d967dbb3eb4a302fc9775db404b"
-  integrity sha512-lfJtM4fBfp+OehiEuBHYglqqJilO7gggEUPBJfxKKLO4hPfJVdlyx1QeFa6Zljm5clhktvJrBAMmklPlZm62Fg==
+halter@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/halter/-/halter-2.5.0.tgz#2b38c1ed5a8729ed7ff78f2a836598bb38da4ec0"
+  integrity sha512-q2e5Iz06k2tCmTSuy4U5bpxwt5mT/+XU8S4UVZsCjBW1uAUO5dGjVyWU7BIXsm9ChCHNQt9ez10k+3E8iFaLOA==
 
 handlebars@^4.1.0:
   version "4.1.0"
@@ -1758,10 +1766,10 @@ randexp@0.4.6:
     discontinuous-range "1.0.0"
     ret "~0.1.10"
 
-react-context-utilities@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/react-context-utilities/-/react-context-utilities-1.0.8.tgz#74d6aa600dde75228438459259cb457808e4acc7"
-  integrity sha512-OOsDrioKcoihNuO/YTUJWar/H1OFdDfx/2G3vplZLZAzdJnE9EM9hzrWS+pUEXmPOo8mJsHknIUyN6ONOcw4pQ==
+react-context-utilities@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/react-context-utilities/-/react-context-utilities-1.0.11.tgz#2361dc0d46555acdbce0a380edae3423a2b56770"
+  integrity sha512-IF90AOufuQh/5vMmkgH4aH1O/Ik+EC5mc39eTo0GbKESF9dRJJ4Qy6rGBWWeEInas3yBaHYQM1TCu7geLWqtTQ==
 
 react-dom@^16.6.1:
   version "16.8.3"
