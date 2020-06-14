@@ -1,6 +1,6 @@
 {
   "name": "react-halter",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/chai-enzyme": "^0.6.6",

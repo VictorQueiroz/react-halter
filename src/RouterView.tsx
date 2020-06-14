@@ -2,7 +2,10 @@ import { boundMethod } from 'autobind-decorator';
 import { Router } from 'halter';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import RoutesTree, { IRouteDefinition, IReactHalterLocation } from './RoutesTree';
+import RoutesTree, {
+    IReactHalterLocation,
+    IRouteDefinition
+} from './RoutesTree';
 
 export interface IRouterViewProps {
     router: Router;

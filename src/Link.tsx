@@ -23,7 +23,12 @@ class Link extends PureComponent<AnchorHTMLAttributes<HTMLAnchorElement> & {
     } = this.props;
 
     if(!disabled && to) {
-      anchorProps.href = router.resolve(to, params, query).replace(/\?$/, '');
+      const match = router.resolve(to, params, query);
+      if(!match) {
+        console.error('Could find no match for route %s with params: %o', to, params);
+        return null;
+      }
+      anchorProps.href = match.replace(/\?$/, '');
       anchorProps.onClick = this.onClick;
     }
 
