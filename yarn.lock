@@ -892,9 +892,9 @@ get-stream@^4.0.0:
     pump "^3.0.0"
 
 glob-parent@~5.1.0:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.1.tgz#b6c1ef417c4e5663ea498f1c45afac6916bbc229"
-  integrity sha512-FnI+VGOpnlGHWZxthPGR+QhR78fuiK0sNLkHQv+bL9fQi57lNNdquIbna/WrfROrolq8GK5Ek6BiMwqL/voRYQ==
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
+  integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
   dependencies:
     is-glob "^4.0.1"
 
@@ -936,11 +936,6 @@ graceful-fs@^4.1.15, graceful-fs@^4.1.2:
   version "4.1.15"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
   integrity sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
-
-halter@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/halter/-/halter-2.5.0.tgz#2b38c1ed5a8729ed7ff78f2a836598bb38da4ec0"
-  integrity sha512-q2e5Iz06k2tCmTSuy4U5bpxwt5mT/+XU8S4UVZsCjBW1uAUO5dGjVyWU7BIXsm9ChCHNQt9ez10k+3E8iFaLOA==
 
 handlebars@^4.1.0:
   version "4.1.0"
@@ -1766,11 +1761,6 @@ randexp@0.4.6:
     discontinuous-range "1.0.0"
     ret "~0.1.10"
 
-react-context-utilities@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/react-context-utilities/-/react-context-utilities-1.0.11.tgz#2361dc0d46555acdbce0a380edae3423a2b56770"
-  integrity sha512-IF90AOufuQh/5vMmkgH4aH1O/Ik+EC5mc39eTo0GbKESF9dRJJ4Qy6rGBWWeEInas3yBaHYQM1TCu7geLWqtTQ==
-
 react-dom@^16.6.1:
   version "16.8.3"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.3.tgz#ae236029e66210783ac81999d3015dfc475b9c32"
@@ -1795,15 +1785,6 @@ react-test-renderer@^16.0.0-0:
     prop-types "^15.6.2"
     react-is "^16.8.3"
     scheduler "^0.13.3"
-
-react@^16.13.1:
-  version "16.13.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
-  integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
 
 read-pkg-up@^4.0.0:
   version "4.0.0"
